@@ -30,11 +30,12 @@ class LoginController extends Controller
             'email'    => 'required|email',
             'password' => 'required|string',
         ]);
-
+        
         if (Auth::guard('customer')->attempt($credentials, $request->filled('remember'))) {
             $customer = Auth::guard('customer')->user();
 
             if (!$customer->hasVerifiedEmail()) {
+                
                 Auth::guard('customer')->logout();
                 return back()->withErrors([
                     'email' => 'Please verify your email address before logging in.',

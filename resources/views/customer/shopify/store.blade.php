@@ -36,27 +36,25 @@
             <div class="card-body">
 
                 <!-- Search & Per-Page Form -->
-                <form method="GET" action="{{ route('customer.shopify.stores') }}">
-                    <div class="row mb-3">
+                <form method="GET" action="{{ route('customer.shopify.stores') }}" class="d-flex align-items-center w-100 mb-3">
                         <!-- Search on left -->
-                        <div class="col-md-6 d-flex align-items-center">
                             <label for="searchStores" class="form-label fw-bold me-2 mb-0">
                                 Search:
                             </label>
+                            <div class="input-group w-100">
                             <input type="text"
                                    name="search"
                                    id="searchStores"
                                    class="form-control form-control-sm"
                                    placeholder="Search..."
                                    value="{{ request('search') }}">
-                            <button type="submit" class="btn btn-sm btn-light ms-2">
+                            <button type="submit" class="input-group-text bg-primary text-white me-3">
                                 Search
                             </button>
-                        </div>
+</div>
 
                         <!-- Per-page dropdown on right -->
-                        <div class="col-md-6 d-flex align-items-center justify-content-md-end mt-2 mt-md-0">
-                            <label for="perPageSelect" class="form-label fw-bold me-2 mb-0">
+                            <label for="perPageSelect" class="form-label fw-bold me-2 mb-0" style="white-space: nowrap">
                                 Show entries per page:
                             </label>
                             <select name="per_page"
@@ -69,8 +67,6 @@
                                 <option value="50"  {{ request('per_page') == 50 ? 'selected' : '' }}>50</option>
                                 <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
                             </select>
-                        </div>
-                    </div>
                 </form>
                 <!-- /Search & Per-Page Form -->
 
