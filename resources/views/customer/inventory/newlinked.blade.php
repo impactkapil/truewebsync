@@ -23,11 +23,10 @@
     @endif
 
     <div class="row mb-3">
-        <div class="col-md-5">
+        <div class="col-md-10">
             <h2>Manage Inventory</h2>
         </div>
-        <div class="col-md-7">
-            <!-- Filter by Secondary Shop -->
+        <!-- <div class="col-md-7">
             <form action="{{ route('customer.linkProducts.list') }}" method="GET" class="d-inline">
                 <label for="shop_id" class="form-label me-2 fw-bold">Filter By Secondary Shop:</label>
                 <select name="shop_id" id="shop_id" class="form-select d-inline" style="width: auto;" onchange="this.form.submit()">
@@ -39,9 +38,22 @@
                     @endforeach
                 </select>
             </form>
-        </div>
+        </div> -->
     </div>
 
+    <div class="filter-container position-relative">
+    <form action="{{ route('customer.linkProducts.list') }}" method="GET" class="d-inline position-absolute end-0" style="top: -4px">
+                <label for="shop_id" class="form-label me-2 fw-bold">Filter By Secondary Shop:</label>
+                <select name="shop_id" id="shop_id" class="form-select d-inline" style="width: auto;" onchange="this.form.submit()">
+                    <option value="">All Secondary Shops</option>
+                    @foreach($secondaryShops as $shop)
+                        <option value="{{ $shop->id }}" {{ isset($selectedShopId) && $selectedShopId == $shop->id ? 'selected' : '' }}>
+                            {{ $shop->store_name ?? ('Shop #'.$shop->id) }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
+    </div>
     <!-- Tabs -->
     <ul class="nav nav-tabs" id="inventoryTabs" role="tablist">
         <li class="nav-item" role="presentation">
@@ -65,7 +77,7 @@
                     <div class="card-body">
                         <!-- Search & Per-Page for LINKED -->
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <form method="GET" action="{{ route('customer.linkProducts.list') }}" class="d-flex align-items-center">
+                            <form method="GET" action="{{ route('customer.linkProducts.list') }}" class="d-flex align-items-center w-100">
                                 @foreach(request()->except(['linked_search','linked_per_page','linked_page']) as $param => $value)
                                     @if(is_array($value))
                                         @foreach($value as $v)
@@ -75,9 +87,9 @@
                                         <input type="hidden" name="{{ $param }}" value="{{ $value }}">
                                     @endif
                                 @endforeach
-                                <label for="linked_search" class="form-label fw-bold me-2 mb-0">Search Linked Products:</label>
+                                <label for="linked_search" style="white-space: nowrap" class="form-label fw-bold me-2 mb-0">Search Linked Products:</label>
                                 <input type="text" name="linked_search" id="linked_search" class="form-control form-control-sm me-3" placeholder="Search..." value="{{ request('linked_search') }}">
-                                <label for="linked_per_page" class="form-label fw-bold me-2 mb-0">Show entries per page:</label>
+                                <label for="linked_per_page" style="white-space: nowrap" class="form-label fw-bold me-2 mb-0">Show entries per page:</label>
                                 <select name="linked_per_page" id="linked_per_page" class="form-select form-select-sm" style="width: auto;" onchange="this.form.submit()">
                                     <option value="10"  {{ request('linked_per_page', 10) == 10 ? 'selected' : '' }}>10</option>
                                     <option value="20"  {{ request('linked_per_page') == 20 ? 'selected' : '' }}>20</option>
@@ -186,7 +198,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <form method="GET"
                           action="{{ route('customer.linkProducts.list') }}"
-                          class="d-flex align-items-center">
+                          class="d-flex align-items-center w-100">
 
                         <!-- Preserve existing query params except unlinked_search, unlinked_per_page, unlinked_page -->
                         @foreach(request()->except(['unlinked_search','unlinked_per_page','unlinked_page']) as $param => $value)
@@ -200,24 +212,26 @@
                         @endforeach
 
                         <!-- Label & text input for unlinked search -->
-                        <label for="unlinked_search"
+                        <label style="white-space: nowrap" for="unlinked_search"
                                class="form-label fw-bold me-2 mb-0">
                             Search Unlinked Products:
                         </label>
+                        <div class="input-group w-100">
                         <input type="text"
                                name="unlinked_search"
                                id="unlinked_search"
-                               class="form-control form-control-sm me-2"
+                               class="form-control form-control-sm"
                                placeholder="Search..."
                                value="{{ request('unlinked_search') }}">
 
                         <!-- NEW: A "Search" button to submit the form -->
-                        <button type="submit" class="btn btn-sm btn-primary me-3">
+                        <button type="submit" class="input-group-text bg-primary text-white me-3">
                             Search
                         </button>
+</div>
 
                         <!-- "Show entries per page" still auto-submits on change -->
-                        <label for="unlinked_per_page" class="form-label fw-bold me-2 mb-0">
+                        <label style="white-space: nowrap" for="unlinked_per_page" class="form-label fw-bold me-2 mb-0">
                             Show entries per page:
                         </label>
                         <select name="unlinked_per_page"
